@@ -30,29 +30,12 @@ function Menu() {
           <Pizza pizzaObj={pizza} key={pizza.name} />
         ))}
       </ul>
-      {/* <Pizza
-        name="Pizza funghi"
-        ingredients="Tomato, mozarella, mushrooms, and onion"
-        imageName="pizzas/funghi.jpg"
-        price={14}
-      />
-      <Pizza
-        name="Pizza Spinaci"
-        ingredients="Tomato, mozarella, spinach, and ricotta cheese"
-        imageName="pizzas/spinaci.jpg"
-        price={20}
-      />
-      <Pizza
-        name="Pizza Margherita"
-        ingredients="Tomato and mozarella"
-        imageName="pizzas/margherita.jpg"
-        price={12}
-      /> */}
     </main>
   );
 }
 
 function Pizza(props) {
+  if (props.pizzaObj.soldOut) return null;
   return (
     <li className="pizza">
       <img src={props.pizzaObj.photoName} alt={props.pizzaObj.name} />
@@ -66,14 +49,35 @@ function Pizza(props) {
 }
 
 function Footer() {
+  const currentHour = new Date().getHours();
+  const openHour = 6;
+  const closeHour = 22;
+  let isOpen;
+  if (currentHour >= openHour && currentHour <= closeHour) isOpen = true;
+  else isOpen = false;
   return (
     <footer className="footer">
-      <p>{new Date().toLocaleTimeString()} We're Currently Open!</p>
+      {isOpen ? (
+        <Order />
+      ) : (
+        <p>
+          Sorry we are closed right now.You can find us open from {openHour}:00
+          to {closeHour}:00
+        </p>
+      )}
     </footer>
   );
 }
 
-//React version 18
+function Order(props) {
+  return (
+    <div className="order">
+      <p>Hey!! We are open right now! Visit us or order from us online.</p>
+      <button className="btn">Order</button>
+    </div>
+  );
+}
+
 const root = ReactDOM.createRoot(document.querySelector("#root"));
 root.render(
   <React.StrictMode>
